@@ -3,6 +3,7 @@ using FrooxEngine;
 using FrooxEngine.UIX;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -12,7 +13,7 @@ namespace BoundedUIX
 {
     internal static class Helpers
     {
-        private static readonly ConditionalWeakTable<RectTransform, OriginalRect> originalRects = new();
+        private static readonly ConditionalWeakTable<RectTransform, OriginalRect> _originalRects = new();
 
         public static bool Contains(this BoundingBox2D boundingBox, float2 point)
             => (point >= boundingBox.Min).All() && (point <= boundingBox.Max).All();
@@ -40,7 +41,7 @@ namespace BoundedUIX
         }
 
         public static OriginalRect GetOriginal(this RectTransform rectTransform)
-            => originalRects.GetOrCreateValue(rectTransform);
+            => _originalRects.GetOrCreateValue(rectTransform);
 
         public static void ResetTransform(this RectTransform rectTransform)
         {
@@ -51,10 +52,10 @@ namespace BoundedUIX
             rectTransform.Pivot.Value = new(.5f, .5f);
         }
 
-        public static bool TryGetMovableRectTransform(this Slot slot, out RectTransform rectTransform)
+        public static bool TryGetMovableRectTransform(this Slot slot, [NotNullWhen(true)] out RectTransform? rectTransform)
             => slot.TryGetRectTransform(out rectTransform) && rectTransform.Slot != rectTransform.Canvas.Slot;
 
-        public static bool TryGetRectTransform(this Slot slot, out RectTransform rectTransform)
+        public static bool TryGetRectTransform(this Slot slot, [NotNullWhen(true)] out RectTransform? rectTransform)
         {
             if (slot?.GetComponent<RectTransform>() is RectTransform rt && rt.Canvas != null)
             {

@@ -2,6 +2,8 @@
 using FrooxEngine;
 using FrooxEngine.UIX;
 using HarmonyLib;
+using MonkeyLoader.Patching;
+using MonkeyLoader.Resonite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +13,18 @@ using System.Reflection.Emit;
 namespace BoundedUIX
 {
     [HarmonyPatch(typeof(DevTool))]
-    internal static class DevToolTipPatches
+    [HarmonyPatchCategory(nameof(DevToolSelectableUIX))]
+    internal sealed class DevToolSelectableUIX : ConfiguredResoniteMonkey<DevToolSelectableUIX, SelectableUIXConfig>
     {
+        public override bool CanBeDisabled => true;
+
+        protected override IEnumerable<IFeaturePatch> GetFeaturePatches() => Enumerable.Empty<IFeaturePatch>();
+
         private static Slot CheckCanvas(RaycastHit hit)
         {
             var bestSlot = hit.Collider.Slot;
 
-            if (BoundedUIX.EnableUIXSelection && bestSlot.TryGetRectTransform(out var rectTransform) && rectTransform.Canvas.Slot == bestSlot)
+            if (Enabled && bestSlot.TryGetRectTransform(out var rectTransform) && rectTransform.Canvas.Slot == bestSlot)
             {
                 bestSlot = FindBestRect(bestSlot.GlobalPointToLocal(hit.Point).xy, bestSlot);
 
@@ -30,8 +37,8 @@ namespace BoundedUIX
 
         private static Slot FindBestRect(float2 hitPoint, Slot best)
         {
-            var prioritizeDepth = BoundedUIX.PrioritizeHierarchyDepth;
-            var ignoreSelected = BoundedUIX.IgnoreAlreadySelected;
+            var prioritizeDepth = ConfigSection.PrioritizeHierarchyDepth;
+            var ignoreSelected = ConfigSection.IgnoreAlreadySelected;
 
             var traversal = new Stack<Slot>();
             traversal.Push(best);
@@ -65,11 +72,11 @@ namespace BoundedUIX
         [HarmonyPatch(nameof(DevTool.TryOpenGizmo))]
         private static IEnumerable<CodeInstruction> TryOpenGizmoTranspiler(IEnumerable<CodeInstruction> codeInstructions)
         {
-            var checkCanvasHitMethod = typeof(DevToolTipPatches).GetMethod(nameof(CheckCanvas), AccessTools.allDeclared);
-            var colliderField = typeof(RaycastHit).GetField(nameof(RaycastHit.Collider), AccessTools.allDeclared);
+            var checkCanvasHitMethod = AccessTools.DeclaredMethod(typeof(DevToolSelectableUIX), nameof(CheckCanvas));
+            var colliderField = AccessTools.Field(typeof(RaycastHit), nameof(RaycastHit.Collider));
 
             var instructions = codeInstructions.ToList();
-            var raycastValueIndex = instructions.FindIndex(instruction => instruction.LoadsField(colliderField));
+            var raycastValueIndex = instructions.FindLastIndex(instruction => instruction.LoadsField(colliderField));
 
             instructions.RemoveAt(raycastValueIndex);
             instructions[raycastValueIndex] = new CodeInstruction(OpCodes.Call, checkCanvasHitMethod);

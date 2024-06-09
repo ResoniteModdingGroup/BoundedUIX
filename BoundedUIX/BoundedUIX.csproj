@@ -1,69 +1,68 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BoundedUIX</RootNamespace>
-    <AssemblyName>BoundedUIX</AssemblyName>
     <TargetFramework>net462</TargetFramework>
-    <LangVersion>latestMajor</LangVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <CopyToLibraries Condition="'$(CopyToLibraries)'==''">true</CopyToLibraries>
-    <ProjectGuid>{0322B2EF-7452-479D-BAE2-FCAB75033337}</ProjectGuid>
+    <AssemblyName>BoundedUIX</AssemblyName>
+    <AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
+    <RootNamespace>BoundedUIX</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(ResonitePath)'==''">
-    <ResonitePath>$(MSBuildThisFileDirectory)Resonite</ResonitePath>
-    <ResonitePath Condition="Exists('C:\Program Files (x86)\Steam\steamapps\common\Resonite\')">C:\Program Files (x86)\Steam\steamapps\common\Resonite</ResonitePath>
-    <ResonitePath Condition="Exists('$(HOME)/.steam/steam/steamapps/common/Resonite/')">$(HOME)/.steam/steam/steamapps/common/Resonite</ResonitePath>
-    <ResonitePath Condition="Exists('D:/Files/Games/Resonite/app/')">D:/Files/Games/Resonite/app</ResonitePath>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>BoundedUIX</PackageId>
+    <Title>Bounded UIX</Title>
+    <Authors>Banane9</Authors>
+    <Version>2.0.0-beta</Version>
+    <Description>
+      This MonkeyLoader mod for Resonite makes UIX elements selectable and editable with the usual Slot gizmos,
+      as well as fixing UIX elements breaking when a parent is inserted.
+    </Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/ResoniteModdingGroup/BoundexUIX</PackageProjectUrl>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>mod; mods; monkeyloader; resonite; uix; development; developer; selection; tool; inspector</PackageTags>
+    <IncludeSymbols>False</IncludeSymbols>
+    <EmbedAllSources>True</EmbedAllSources>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddSymbolsToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
   
+  <Target Name="AddSymbolsToPackage">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(OutDir)$(AssemblyName).pdb" PackagePath="lib/$(TargetFramework)/" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="CopyPackage" AfterTargets="Pack">
+    <Copy Condition="'$(CopyToLibraries)'=='true'" SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" DestinationFiles="$(ResonitePath)\MonkeyLoader\Mods\$(PackageId).nupkg" />
+    <Message Condition="'$(CopyToLibraries)'=='true'" Text="Copied '$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg' to '$(ResonitePath)\MonkeyLoader\Mods\$(PackageId).nupkg'" Importance="high" />
+  </Target>
+
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Resonite\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="FrooxEngine">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Resonite\Resonite_Data\Managed\Public\FrooxEngine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Elements.Core">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Resonite\Resonite_Data\Managed\Elements.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.ValueTuple">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Resonite\Resonite_Data\Managed\System.ValueTuple.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ResoniteModLoader">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Resonite\Libraries\ResoniteModLoader.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
+    <None Include="..\README.md" Pack="true" PackagePath="" />
+    <None Include="Locale\*" Pack="true" PackagePath="content/Locale/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonkeyLoader" Version="0.16.4-beta" />
+    <PackageReference Include="MonkeyLoader.GamePacks.Resonite" Version="0.15.2-beta" GeneratePathProperty="true" />
+    <PackageReference Include="PolySharp" Version="1.14.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Resonite.Elements.Core" Version="1.0.2" />
+    <PackageReference Include="Resonite.FrooxEngine" Version="2024.6.5.198" />
+    <PackageReference Include="System.Text.Json" Version="8.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(CopyToLibraries)'=='true'">
-    <Copy SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFiles="$(ResonitePath)\rml_mods\$(TargetFileName)" />
-    <Message Text="Copied $(TargetFileName) to $(ResonitePath)\rml_mods\$(TargetFileName)" Importance="high" />
-  </Target>
+  <ItemGroup>
+    <!-- Reference the pre-patcher assembly from the Game Pack because PackageReference is stupid -->
+    <Reference Include="MonkeyLoader.Resonite.Data">
+      <HintPath>$(PkgMonkeyLoader_GamePacks_Resonite)\lib\net462\pre-patchers\MonkeyLoader.Resonite.Data.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

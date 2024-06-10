@@ -16,6 +16,8 @@ namespace BoundedUIX
     [HarmonyPatch(typeof(DevTool), nameof(DevTool.TryOpenGizmo))]
     internal sealed class DevToolSelectableUIX : ConfiguredResoniteMonkey<DevToolSelectableUIX, SelectableUIXConfig>
     {
+        private static float2 _lastPosition = float2.MaxValue;
+        private static Slot? _lastSlot = null;
         public override bool CanBeDisabled => true;
 
         protected override IEnumerable<IFeaturePatch> GetFeaturePatches() => Enumerable.Empty<IFeaturePatch>();
@@ -38,7 +40,12 @@ namespace BoundedUIX
         private static Slot FindBestRect(float2 hitPoint, Slot best)
         {
             var prioritizeDepth = ConfigSection.PrioritizeHierarchyDepth;
-            var ignoreSelected = ConfigSection.IgnoreAlreadySelected;
+
+            var ignoreSelected = ConfigSection.IgnoreAlreadySelected && _lastSlot == best
+                && (MathX.Distance(_lastPosition, hitPoint) < ConfigSection.RepeatSelectionThreshold);
+
+            _lastPosition = hitPoint;
+            _lastSlot = best;
 
             var traversal = new Stack<Slot>();
             traversal.Push(best);
@@ -47,14 +54,14 @@ namespace BoundedUIX
             {
                 var current = traversal.Pop();
 
-                if (!current.TryGetRectTransform(out var rectTransform))
+                if (!current.TryGetRectTransform(out var rectTransform)
+                 || (ignoreSelected && current.TryGetGizmo<SlotGizmo>() is not null))               // Not already selected - to help when something's in the way
                     continue;
 
                 var isHit = rectTransform.GetCanvasBounds().Contains(hitPoint);
                 var hasGraphic = rectTransform.Graphic != null;
 
                 if (isHit && hasGraphic && (!rectTransform.IsMask || rectTransform.IsMaskVisible)   // Has anything possibly visible in the bounds
-                 && (!ignoreSelected || current.TryGetGizmo<SlotGizmo>() == null)                   // Not already selected - to help when something's in the way
                  && (!prioritizeDepth || best.HierachyDepth <= current.HierachyDepth))              // Hierarchy depth at least as deep when prioritizing
                     best = current;
 

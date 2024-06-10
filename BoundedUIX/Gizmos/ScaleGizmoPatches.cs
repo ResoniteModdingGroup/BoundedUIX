@@ -1,19 +1,18 @@
-﻿using Elements.Core;
-using FrooxEngine;
-using FrooxEngine.UIX;
+﻿using FrooxEngine;
 using FrooxEngine.Undo;
 using HarmonyLib;
 
-namespace BoundedUIX
+namespace BoundedUIX.Gizmos
 {
     [HarmonyPatch(typeof(ScaleGizmo))]
+    [HarmonyPatchCategory(nameof(UIXGizmos))]
     internal static class ScaleGizmoPatches
     {
         [HarmonyPostfix]
         [HarmonyPatch(nameof(ScaleGizmo.OnInteractionBegin))]
         private static void OnInteractionBeginPostfix(ScaleGizmo __instance)
         {
-            if (!BoundedUIX.EnableUIXGizmos || !__instance.TargetSlot.Target.TryGetMovableRectTransform(out RectTransform rectTransform))
+            if (!UIXGizmos.Enabled || !__instance.TargetSlot.Target.TryGetMovableRectTransform(out var rectTransform))
                 return;
 
             var originalTransform = rectTransform.GetOriginal();
@@ -40,7 +39,7 @@ namespace BoundedUIX
         private static void UpdatePointPostfix(ScaleGizmo __instance)
         {
             var targetSlot = __instance.TargetSlot.Target;
-            if (!BoundedUIX.EnableUIXGizmos || !targetSlot.TryGetMovableRectTransform(out var rectTransform))
+            if (!UIXGizmos.Enabled || !targetSlot.TryGetMovableRectTransform(out var rectTransform))
                 return;
 
             var originalRect = rectTransform.GetOriginal();

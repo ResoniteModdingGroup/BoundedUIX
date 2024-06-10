@@ -7,23 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Elements.Core;
+using BoundedUIX.Gizmos;
+using MonkeyLoader.Resonite.UI;
+using MonkeyLoader.Resonite;
+using MonkeyLoader.Patching;
 
 namespace BoundedUIX
 {
     [HarmonyPatch(typeof(RectTransform))]
-    internal static class RectTransformPatches
+    [HarmonyPatchCategory(nameof(RectTransformDiagnosis))]
+    internal sealed class RectTransformDiagnosis : ResoniteMonkey<RectTransformDiagnosis>
     {
+        protected override IEnumerable<IFeaturePatch> GetFeaturePatches() => Enumerable.Empty<IFeaturePatch>();
+
         [HarmonyPostfix]
         [HarmonyPatch(nameof(RectTransform.BuildInspectorUI))]
         private static void BuildInspectorUIPostfix(RectTransform __instance, UIBuilder ui)
         {
-            var button = ui.Button("Visualize Preferred Area");
-            var valueField = button.Slot.AttachComponent<ValueField<bool>>().Value;
-
-            var toggle = button.Slot.AttachComponent<ButtonToggle>();
-            toggle.TargetValue.Target = valueField;
-
-            valueField.OnValueChange += field =>
+            ui.LocalActionButton("Visualize Preferred Area", button =>
             {
                 button.Enabled = false;
 
@@ -31,7 +32,7 @@ namespace BoundedUIX
                 {
                     while (!button.IsRemoved && !__instance.IsRemoved && (!__instance?.Canvas.IsRemoved ?? false))
                     {
-                        var horizontal = __instance.GetHorizontalMetrics().preferred;
+                        var horizontal = __instance!.GetHorizontalMetrics().preferred;
                         var vertical = __instance.GetVerticalMetrics().preferred;
                         var area = __instance.ComputeGlobalComputeRect();
                         var color = colorX.Blue;
@@ -54,7 +55,7 @@ namespace BoundedUIX
                         }
 
                         var pos = __instance.Canvas.Slot.LocalPointToGlobal(new float3(area.Center / __instance.Canvas.UnitScale));
-                        pos -= 0.5f * BoundedUIX.GizmoOffset * __instance.Canvas.Slot.Forward;
+                        pos -= 0.5f * UIXGizmoConfig.Offset * __instance.Canvas.Slot.Forward;
 
                         var size = __instance.Canvas.Slot.LocalScaleToGlobal(new float3(horizontal, vertical) / __instance.Canvas.UnitScale);
 
@@ -63,7 +64,7 @@ namespace BoundedUIX
                         await default(NextUpdate);
                     }
                 });
-            };
+            });
         }
     }
 }

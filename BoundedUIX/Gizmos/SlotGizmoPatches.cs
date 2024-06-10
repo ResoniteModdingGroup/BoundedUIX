@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
 using Elements.Core;
 using FrooxEngine;
-using FrooxEngine.UIX;
 using HarmonyLib;
 
-namespace BoundedUIX
+namespace BoundedUIX.Gizmos
 {
     [HarmonyPatch(typeof(SlotGizmo))]
+    [HarmonyPatchCategory(nameof(UIXGizmos))]
     internal static class SlotGizmoPatches
     {
-        private static readonly Type RotationGizmoType = typeof(RotationGizmo);
+        private static readonly Type _rotationGizmoType = typeof(RotationGizmo);
 
         private static BoundingBox BoundUIX(BoundingBox bounds, Slot target, Slot space)
         {
-            if (!BoundedUIX.EnableUIXGizmos || !target.TryGetMovableRectTransform(out var rectTransform))
+            if (!UIXGizmos.Enabled || !target.TryGetMovableRectTransform(out var rectTransform))
                 return bounds;
 
             var area = rectTransform.ComputeGlobalComputeRect();
@@ -62,18 +61,18 @@ namespace BoundedUIX
         private static void SetupPostfix(SlotGizmo __instance)
         {
             __instance.IsLocalSpace.OnValueChange += field => __instance.SwitchSpace();
-            
+
             var moveableRect = __instance._targetSlot.Target.TryGetMovableRectTransform(out var rectTransform);
 
             if (moveableRect)
-                rectTransform.GetOriginal().Local = __instance.IsLocalSpace.Value;
+                rectTransform!.GetOriginal().Local = __instance.IsLocalSpace.Value;
 
             if (__instance._scaleGizmo.Target._zSlot.Target is Slot zSlot)
-                zSlot.ActiveSelf = !moveableRect || !BoundedUIX.EnableUIXGizmos;
+                zSlot.ActiveSelf = !moveableRect || !UIXGizmos.Enabled;
 
             // Hide blue z line of the gizmo
             if (__instance._scaleGizmo.Target.Slot.GetComponent<MeshRenderer>(r => r.Materials[0] is OverlayFresnelMaterial material && material.FrontNearColor == colorX.Blue) is MeshRenderer renderer)
-                renderer.Enabled = !moveableRect || !BoundedUIX.EnableUIXGizmos;
+                renderer.Enabled = !moveableRect || !UIXGizmos.Enabled;
         }
 
         [HarmonyPrefix]
@@ -83,7 +82,7 @@ namespace BoundedUIX
             var local = __instance.IsLocalSpace.Value;
             var target = __instance._targetSlot.Target;
 
-            if (BoundedUIX.EnableUIXGizmos && target.TryGetMovableRectTransform(out var rectTransform))
+            if (UIXGizmos.Enabled && target.TryGetMovableRectTransform(out var rectTransform))
             {
                 // Always let it set local space for the translation gizmos on rect transforms
                 rectTransform.GetOriginal().Local = local;
@@ -98,10 +97,10 @@ namespace BoundedUIX
 
         private static float3 UIXBoundCenter(Slot target)
         {
-            if (!BoundedUIX.EnableUIXGizmos || !target.TryGetMovableRectTransform(out var rectTransform))
+            if (!UIXGizmos.Enabled || !target.TryGetMovableRectTransform(out var rectTransform))
                 return target.GlobalPosition;
 
-            return rectTransform.GetGlobalBounds().Center - (BoundedUIX.GizmoOffset * rectTransform.Canvas.Slot.Forward);
+            return rectTransform.GetGlobalBounds().Center - (UIXGizmoConfig.Offset * rectTransform.Canvas.Slot.Forward);
         }
     }
 }

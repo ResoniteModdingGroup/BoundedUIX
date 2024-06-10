@@ -45,8 +45,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonkeyLoader" Version="0.16.4-beta" />
-    <PackageReference Include="MonkeyLoader.GamePacks.Resonite" Version="0.15.2-beta" GeneratePathProperty="true" />
+    <PackageReference Include="MonkeyLoader" Version="0.17.2-beta" />
+    <PackageReference Include="MonkeyLoader.GamePacks.Resonite" Version="0.16.0-beta" GeneratePathProperty="true" />
     <PackageReference Include="PolySharp" Version="1.14.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

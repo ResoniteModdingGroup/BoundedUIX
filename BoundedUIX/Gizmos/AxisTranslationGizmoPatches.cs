@@ -1,11 +1,11 @@
 ﻿using Elements.Core;
 using FrooxEngine;
-using FrooxEngine.UIX;
 using FrooxEngine.Undo;
 using HarmonyLib;
 
-namespace BoundedUIX
+namespace BoundedUIX.Gizmos
 {
+    [HarmonyPatchCategory(nameof(UIXGizmos))]
     [HarmonyPatch(typeof(AxisTranslationGizmo))]
     internal static class AxisTranslationGizmoPatches
     {
@@ -13,7 +13,7 @@ namespace BoundedUIX
         [HarmonyPatch(nameof(AxisTranslationGizmo.OnInteractionBegin))]
         private static void OnInteractionBeginPostfix(AxisTranslationGizmo __instance)
         {
-            if (!BoundedUIX.EnableUIXGizmos || !__instance.TargetSlot.Target.TryGetMovableRectTransform(out RectTransform rectTransform))
+            if (!UIXGizmos.Enabled || !__instance.TargetSlot.Target.TryGetMovableRectTransform(out var rectTransform))
                 return;
 
             var originalTransform = rectTransform.GetOriginal();
@@ -40,7 +40,7 @@ namespace BoundedUIX
         private static bool UpdatePointPrefix(AxisTranslationGizmo __instance, float3 localPoint)
         {
             var targetSlot = __instance.TargetSlot.Target;
-            if (!BoundedUIX.EnableUIXGizmos || !targetSlot.TryGetMovableRectTransform(out var rectTransform))
+            if (!UIXGizmos.Enabled || !targetSlot.TryGetMovableRectTransform(out var rectTransform))
                 return true;
 
             var offsetPoint = localPoint - __instance._pointOffset;
@@ -51,9 +51,7 @@ namespace BoundedUIX
             var translationOffset = (projectedPoint - __instance.PointSpace.Space.GlobalPointToLocal(originalRect.Center)).xy;
 
             if (__instance.TargetValue.Target != null)
-            {
                 __instance.TargetValue.Target.Value = translationOffset.Magnitude;
-            }
 
             var pxOffset = rectTransform.Canvas.UnitScale.Value * translationOffset;
             if (!originalRect.Local)

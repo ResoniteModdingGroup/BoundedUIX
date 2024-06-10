@@ -12,8 +12,8 @@ using System.Reflection.Emit;
 
 namespace BoundedUIX
 {
-    [HarmonyPatch(typeof(DevTool))]
     [HarmonyPatchCategory(nameof(DevToolSelectableUIX))]
+    [HarmonyPatch(typeof(DevTool), nameof(DevTool.TryOpenGizmo))]
     internal sealed class DevToolSelectableUIX : ConfiguredResoniteMonkey<DevToolSelectableUIX, SelectableUIXConfig>
     {
         public override bool CanBeDisabled => true;
@@ -69,7 +69,6 @@ namespace BoundedUIX
         }
 
         [HarmonyTranspiler]
-        [HarmonyPatch(nameof(DevTool.TryOpenGizmo))]
         private static IEnumerable<CodeInstruction> TryOpenGizmoTranspiler(IEnumerable<CodeInstruction> codeInstructions)
         {
             var checkCanvasHitMethod = AccessTools.DeclaredMethod(typeof(DevToolSelectableUIX), nameof(CheckCanvas));

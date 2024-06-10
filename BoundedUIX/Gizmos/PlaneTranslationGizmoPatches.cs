@@ -1,12 +1,11 @@
 ﻿using Elements.Core;
 using FrooxEngine;
-using FrooxEngine.UIX;
 using FrooxEngine.Undo;
 using HarmonyLib;
-using System.Runtime.CompilerServices;
 
-namespace BoundedUIX
+namespace BoundedUIX.Gizmos
 {
+    [HarmonyPatchCategory(nameof(UIXGizmos))]
     [HarmonyPatch(typeof(PlaneTranslationGizmo))]
     internal static class PlaneTranslationGizmoPatches
     {
@@ -14,7 +13,7 @@ namespace BoundedUIX
         [HarmonyPatch(nameof(PlaneTranslationGizmo.OnInteractionBegin))]
         private static void OnInteractionBeginPostfix(PlaneTranslationGizmo __instance)
         {
-            if (!BoundedUIX.EnableUIXGizmos || !__instance.TargetSlot.Target.TryGetMovableRectTransform(out var rectTransform))
+            if (!UIXGizmos.Enabled || !__instance.TargetSlot.Target.TryGetMovableRectTransform(out var rectTransform))
                 return;
 
             var originalTransform = rectTransform.GetOriginal();
@@ -41,7 +40,7 @@ namespace BoundedUIX
         private static bool UpdatePointPrefix(PlaneTranslationGizmo __instance, float3 localPoint)
         {
             var targetSlot = __instance.TargetSlot.Target;
-            if (!BoundedUIX.EnableUIXGizmos || !targetSlot.TryGetMovableRectTransform(out var rectTransform))
+            if (!UIXGizmos.Enabled || !targetSlot.TryGetMovableRectTransform(out var rectTransform))
                 return true;
 
             var offsetPoint = localPoint - __instance._pointOffset;

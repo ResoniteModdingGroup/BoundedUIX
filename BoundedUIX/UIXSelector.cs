@@ -40,6 +40,7 @@ namespace BoundedUIX
         private static Slot FindBestRect(float2 hitPoint, Slot best)
         {
             var prioritizeDepth = ConfigSection.PrioritizeHierarchyDepth;
+            var allowLayoutSelection = ConfigSection.AllowLayoutSelection;
 
             var ignoreSelected = ConfigSection.IgnoreAlreadySelected && _lastSlot == best
                 && (MathX.Distance(_lastPosition, hitPoint) < ConfigSection.RepeatSelectionThreshold);
@@ -61,7 +62,7 @@ namespace BoundedUIX
                 var isHit = rectTransform.GetCanvasBounds().Contains(hitPoint);
                 var hasGraphic = rectTransform.Graphic != null;
 
-                if (isHit && hasGraphic && (!rectTransform.IsMask || rectTransform.IsMaskVisible)   // Has anything possibly visible in the bounds
+                if (isHit && (allowLayoutSelection || (hasGraphic && (!rectTransform.IsMask || rectTransform.IsMaskVisible)))   // Has anything possibly visible in the bounds
                  && (!prioritizeDepth || best.HierachyDepth <= current.HierachyDepth))              // Hierarchy depth at least as deep when prioritizing
                     best = current;
 

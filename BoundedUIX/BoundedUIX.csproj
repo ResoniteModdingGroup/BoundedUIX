@@ -11,14 +11,14 @@
     <PackageId>BoundedUIX</PackageId>
     <Title>Bounded UIX</Title>
     <Authors>Banane9</Authors>
-    <Version>2.0.0-beta</Version>
+    <Version>2.0.1-beta</Version>
     <Description>
       This MonkeyLoader mod for Resonite makes UIX elements selectable and editable with the usual Slot gizmos,
       as well as fixing UIX elements breaking when a parent is inserted.
     </Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/ResoniteModdingGroup/BoundexUIX</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/ResoniteModdingGroup/BoundedUIX</PackageProjectUrl>
     <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>mod; mods; monkeyloader; resonite; uix; development; developer; selection; tool; inspector</PackageTags>

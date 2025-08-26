@@ -2,6 +2,7 @@
 using FrooxEngine;
 using FrooxEngine.UIX;
 using HarmonyLib;
+using MonkeyLoader.Resonite.UI;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -9,7 +10,9 @@ using System.Reflection.Emit;
 namespace BoundedUIX.Inspector
 {
     [HarmonyPatchCategory(nameof(SlotAddingPatches))]
-    [HarmonyPatch(typeof(SlotPositioning), nameof(SlotPositioning.CreatePivotAtCenter), new[] { typeof(Slot), typeof(BoundingBox), typeof(bool) }, new[] { ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal })]
+    [HarmonyPatch(typeof(SlotPositioning), nameof(SlotPositioning.CreatePivotAtCenter),
+        [typeof(Slot), typeof(BoundingBox), typeof(bool)],
+        [ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Normal])]
     internal static class CreatePivotPatch
     {
         private static Slot CreatePivotAddPostfix(Slot newSlot, Slot targetSlot)
@@ -49,12 +52,10 @@ namespace BoundedUIX.Inspector
             pivotTransform.OffsetMin.Value = -pivotOffset;
             pivotTransform.OffsetMax.Value = pivotOffset;
 
-            originalTransform.ResetTransform();
+            originalTransform.Reset();
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
-        {
-            return SlotAddingPatches.PostfixToAddSlot(codeInstructions, new[] { new CodeInstruction(OpCodes.Ldarg_0) }, CreatePivotAddPostfix);
-        }
+            => SlotAddingPatches.PostfixToAddSlot(codeInstructions, [new CodeInstruction(OpCodes.Ldarg_0)], CreatePivotAddPostfix);
     }
 }

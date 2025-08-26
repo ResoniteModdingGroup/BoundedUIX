@@ -19,7 +19,7 @@ namespace BoundedUIX.Gizmos
             var moveableRect = slot.TryGetMovableRectTransform(out _);
 
             foreach (var child in __instance.Slot.Children)
-                child.ActiveSelf = !moveableRect || !child.Name.Contains("Z") || !UIXGizmos.Enabled;
+                child.ActiveSelf = !moveableRect || !child.Name.Contains('Z') || !UIXGizmos.Enabled;
         }
     }
 }

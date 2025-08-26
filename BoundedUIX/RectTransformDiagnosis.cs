@@ -10,7 +10,6 @@ using Elements.Core;
 using BoundedUIX.Gizmos;
 using MonkeyLoader.Resonite.UI;
 using MonkeyLoader.Resonite;
-using MonkeyLoader.Patching;
 
 namespace BoundedUIX
 {
@@ -18,8 +17,6 @@ namespace BoundedUIX
     [HarmonyPatchCategory(nameof(RectTransformDiagnosis))]
     internal sealed class RectTransformDiagnosis : ResoniteMonkey<RectTransformDiagnosis>
     {
-        protected override IEnumerable<IFeaturePatch> GetFeaturePatches() => Enumerable.Empty<IFeaturePatch>();
-
         [HarmonyPostfix]
         [HarmonyPatch(nameof(RectTransform.BuildInspectorUI))]
         private static void BuildInspectorUIPostfix(RectTransform __instance, UIBuilder ui)

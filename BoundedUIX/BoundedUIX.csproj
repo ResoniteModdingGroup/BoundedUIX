@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net462</TargetFramework>
     <AssemblyName>BoundedUIX</AssemblyName>
     <AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
     <RootNamespace>BoundedUIX</RootNamespace>
@@ -11,11 +10,9 @@
     <PackageId>BoundedUIX</PackageId>
     <Title>Bounded UIX</Title>
     <Authors>Banane9</Authors>
-    <Version>2.0.1-beta</Version>
-    <Description>
-      This MonkeyLoader mod for Resonite makes UIX elements selectable and editable with the usual Slot gizmos,
-      as well as fixing UIX elements breaking when a parent is inserted.
-    </Description>
+    <Version>2.1.0-beta</Version>
+    <Description>This MonkeyLoader mod for Resonite makes UIX elements selectable and editable with the usual Slot gizmos,
+as well as fixing UIX elements breaking when a parent is inserted.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/ResoniteModdingGroup/BoundedUIX</PackageProjectUrl>
@@ -45,24 +42,19 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonkeyLoader" Version="0.17.2-beta" />
-    <PackageReference Include="MonkeyLoader.GamePacks.Resonite" Version="0.16.0-beta" GeneratePathProperty="true" />
-    <PackageReference Include="PolySharp" Version="1.14.1">
+    <PackageReference Include="MonkeyLoader.GamePacks.Resonite" Version="0.24.1-beta" GeneratePathProperty="true" />
+    <PackageReference Include="PolySharp" Version="1.15.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Resonite.Elements.Core" Version="1.0.2" />
-    <PackageReference Include="Resonite.FrooxEngine" Version="2024.6.5.198" />
-    <PackageReference Include="System.Text.Json" Version="8.0.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Resonite.Elements.Core" Version="1.4.9.4" />
+    <PackageReference Include="Resonite.FrooxEngine" Version="2025.8.28.607" />
   </ItemGroup>
   
   <ItemGroup>
     <!-- Reference the pre-patcher assembly from the Game Pack because PackageReference is stupid -->
     <Reference Include="MonkeyLoader.Resonite.Data">
-      <HintPath>$(PkgMonkeyLoader_GamePacks_Resonite)\lib\net462\pre-patchers\MonkeyLoader.Resonite.Data.dll</HintPath>
+      <HintPath>$(PkgMonkeyLoader_GamePacks_Resonite)\lib\net9.0\pre-patchers\MonkeyLoader.Resonite.Data.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 using Elements.Core;
 using FrooxEngine;
 using HarmonyLib;
+using MonkeyLoader.Resonite.UI;
 
 namespace BoundedUIX.Gizmos
 {
@@ -30,10 +31,11 @@ namespace BoundedUIX.Gizmos
         [HarmonyPatch(nameof(SlotGizmo.OnCommonUpdate))]
         private static IEnumerable<CodeInstruction> OnCommonUpdateTranspiler(IEnumerable<CodeInstruction> codeInstructions)
         {
-            var boundUIXMethod = typeof(SlotGizmoPatches).GetMethod(nameof(BoundUIX), AccessTools.allDeclared);
-            var computeBoundingBoxMethod = typeof(BoundsHelper).GetMethod(nameof(BoundsHelper.ComputeBoundingBox), AccessTools.allDeclared);
-            var getGlobalPositionMethod = typeof(Slot).GetProperty(nameof(Slot.GlobalPosition), AccessTools.allDeclared).GetMethod;
-            var uixBoundCenterMethod = typeof(SlotGizmoPatches).GetMethod(nameof(UIXBoundCenter), AccessTools.allDeclared);
+            var computeBoundingBoxMethod = AccessTools.Method(typeof(BoundsHelper), nameof(BoundsHelper.ComputeBoundingBox));
+            var getGlobalPositionMethod = AccessTools.PropertyGetter(typeof(Slot), nameof(Slot.GlobalPosition));
+
+            var boundUIXMethod = AccessTools.Method(typeof(SlotGizmoPatches), nameof(BoundUIX));
+            var uixBoundCenterMethod = AccessTools.Method(typeof(SlotGizmoPatches), nameof(UIXBoundCenter));
 
             var instructions = codeInstructions.ToList();
 

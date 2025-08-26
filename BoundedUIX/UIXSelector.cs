@@ -2,8 +2,8 @@
 using FrooxEngine;
 using FrooxEngine.UIX;
 using HarmonyLib;
-using MonkeyLoader.Patching;
 using MonkeyLoader.Resonite;
+using MonkeyLoader.Resonite.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +19,6 @@ namespace BoundedUIX
         private static float2 _lastPosition = float2.MaxValue;
         private static Slot? _lastSlot = null;
         public override bool CanBeDisabled => true;
-
-        protected override IEnumerable<IFeaturePatch> GetFeaturePatches() => Enumerable.Empty<IFeaturePatch>();
 
         private static Slot CheckCanvas(RaycastHit hit)
         {

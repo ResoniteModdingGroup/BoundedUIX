@@ -2,6 +2,7 @@
 using HarmonyLib;
 using MonkeyLoader.Patching;
 using MonkeyLoader.Resonite;
+using MonkeyLoader.Resonite.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +17,6 @@ namespace BoundedUIX.Gizmos
     {
         public override bool CanBeDisabled => true;
         public override string Name => "UIX Gizmos";
-
-        protected override IEnumerable<IFeaturePatch> GetFeaturePatches() => Enumerable.Empty<IFeaturePatch>();
 
         [HarmonyPrefix]
         private static bool PositionAtTargetPrefix(Gizmo __instance)

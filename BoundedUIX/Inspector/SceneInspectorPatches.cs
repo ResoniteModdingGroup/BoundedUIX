@@ -2,6 +2,7 @@
 using FrooxEngine;
 using FrooxEngine.UIX;
 using HarmonyLib;
+using MonkeyLoader.Resonite.UI;
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -17,8 +18,8 @@ namespace BoundedUIX.Inspector
             get
             {
                 yield return new CodeInstruction(OpCodes.Ldarg_0);
-                yield return new CodeInstruction(OpCodes.Ldfld, typeof(SceneInspector).GetField(nameof(SceneInspector.ComponentView), AccessTools.all));
-                yield return new CodeInstruction(OpCodes.Callvirt, typeof(SyncRef<Slot>).GetProperty(nameof(SyncRef<Slot>.Target)).GetMethod);
+                yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SceneInspector), nameof(SceneInspector.ComponentView)));
+                yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SyncRef<Slot>), nameof(SyncRef<Slot>.Target)));
             }
         }
 
@@ -48,7 +49,7 @@ namespace BoundedUIX.Inspector
                 if (InspectorModificationConfig.MoveTransformToParent)
                 {
                     newTransform.CopyValues(originalTransform);
-                    originalTransform.ResetTransform();
+                    originalTransform.Reset();
                 }
             }
 

@@ -1,8 +1,8 @@
 <Project>
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <TargetFramework>net462</TargetFramework>
-        <LangVersion>11.0</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>13.0</LangVersion>
         <Nullable>enable</Nullable>
         <Deterministic>true</Deterministic>
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -12,8 +12,8 @@
         <CopyToLibraries Condition="'$(CopyToLibraries)'==''">true</CopyToLibraries>
         
         <RestoreAdditionalProjectSources>
-            https://pkg.munally.com/MonkeyModdingTroop/index.json;
-            https://pkg.munally.com/ResoniteModdingGroup/index.json
+          https://pkg.munally.com/MonkeyModdingTroop/index.json;
+          https://nuget.pkg.github.com/ResoniteModdingGroup/index.json
         </RestoreAdditionalProjectSources>
     </PropertyGroup>
 

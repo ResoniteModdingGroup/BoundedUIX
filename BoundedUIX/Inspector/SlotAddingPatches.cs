@@ -31,7 +31,5 @@ namespace BoundedUIX.Inspector
                 }
             }
         }
-
-        protected override IEnumerable<IFeaturePatch> GetFeaturePatches() => Enumerable.Empty<IFeaturePatch>();
     }
 }

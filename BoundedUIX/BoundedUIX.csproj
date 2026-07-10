@@ -1,16 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Remora.Resonite.Sdk/2.3.1">
   <PropertyGroup>
-    <AssemblyName>BoundedUIX</AssemblyName>
-    <AssemblyFileName>$(AssemblyTitle).dll</AssemblyFileName>
-    <RootNamespace>BoundedUIX</RootNamespace>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>BoundedUIX</PackageId>
     <Title>Bounded UIX</Title>
     <Authors>Banane9</Authors>
-    <Version>2.1.0-beta</Version>
+    <Version>2.1.1-beta</Version>
     <Description>This MonkeyLoader mod for Resonite makes UIX elements selectable and editable with the usual Slot gizmos,
 as well as fixing UIX elements breaking when a parent is inserted.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,22 +12,7 @@ as well as fixing UIX elements breaking when a parent is inserted.</Description>
     <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>mod; mods; monkeyloader; resonite; uix; development; developer; selection; tool; inspector</PackageTags>
-    <IncludeSymbols>False</IncludeSymbols>
-    <EmbedAllSources>True</EmbedAllSources>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddSymbolsToPackage</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
-  
-  <Target Name="AddSymbolsToPackage">
-    <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutDir)$(AssemblyName).pdb" PackagePath="lib/$(TargetFramework)/" />
-    </ItemGroup>
-  </Target>
-
-  <Target Name="CopyPackage" AfterTargets="Pack">
-    <Copy Condition="'$(CopyToLibraries)'=='true'" SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" DestinationFiles="$(ResonitePath)\MonkeyLoader\Mods\$(PackageId).nupkg" />
-    <Message Condition="'$(CopyToLibraries)'=='true'" Text="Copied '$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg' to '$(ResonitePath)\MonkeyLoader\Mods\$(PackageId).nupkg'" Importance="high" />
-  </Target>
 
   <ItemGroup>
     <None Include="..\README.md" Pack="true" PackagePath="" />
@@ -42,19 +20,7 @@ as well as fixing UIX elements breaking when a parent is inserted.</Description>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MonkeyLoader.GamePacks.Resonite" Version="0.24.1-beta" GeneratePathProperty="true" />
-    <PackageReference Include="PolySharp" Version="1.15.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Resonite.Elements.Core" Version="1.4.9.4" />
-    <PackageReference Include="Resonite.FrooxEngine" Version="2025.8.28.607" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <!-- Reference the pre-patcher assembly from the Game Pack because PackageReference is stupid -->
-    <Reference Include="MonkeyLoader.Resonite.Data">
-      <HintPath>$(PkgMonkeyLoader_GamePacks_Resonite)\lib\net9.0\pre-patchers\MonkeyLoader.Resonite.Data.dll</HintPath>
-    </Reference>
+    <ResoniteReference Include="Elements.Core" />
+    <ResoniteReference Include="FrooxEngine" />
   </ItemGroup>
 </Project>

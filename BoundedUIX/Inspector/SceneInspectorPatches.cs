@@ -1,10 +1,7 @@
-﻿using Elements.Core;
-using FrooxEngine;
+﻿using FrooxEngine;
 using FrooxEngine.UIX;
 using HarmonyLib;
 using MonkeyLoader.Resonite.UI;
-using System;
-using System.Collections.Generic;
 using System.Reflection.Emit;
 
 namespace BoundedUIX.Inspector

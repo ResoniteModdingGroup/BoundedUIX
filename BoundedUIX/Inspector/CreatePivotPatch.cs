@@ -3,8 +3,6 @@ using FrooxEngine;
 using FrooxEngine.UIX;
 using HarmonyLib;
 using MonkeyLoader.Resonite.UI;
-using System;
-using System.Collections.Generic;
 using System.Reflection.Emit;
 
 namespace BoundedUIX.Inspector
@@ -33,6 +31,7 @@ namespace BoundedUIX.Inspector
              || !__result.TryGetMovableRectTransform(out var pivotTransform))
                 return;
 
+            // May happen if the original slot's bounding box is invalid
             if (slot == __result)
             {
                 __result = slot.Parent.AddSlot(InspectorModificationConfig.PivotSlotName.Replace(InspectorModificationConfig.TargetSlotNamePlaceholder, slot.Name));

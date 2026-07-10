@@ -4,10 +4,6 @@ using FrooxEngine.UIX;
 using HarmonyLib;
 using MonkeyLoader.Resonite;
 using MonkeyLoader.Resonite.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Reflection.Emit;
 
 namespace BoundedUIX
@@ -18,6 +14,7 @@ namespace BoundedUIX
     {
         private static float2 _lastPosition = float2.MaxValue;
         private static Slot? _lastSlot = null;
+
         public override bool CanBeDisabled => true;
 
         private static Slot CheckCanvas(RaycastHit hit)

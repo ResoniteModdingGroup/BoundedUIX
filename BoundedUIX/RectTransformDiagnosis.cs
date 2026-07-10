@@ -1,37 +1,42 @@
 ﻿using FrooxEngine.UIX;
 using FrooxEngine;
 using HarmonyLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Elements.Core;
 using BoundedUIX.Gizmos;
 using MonkeyLoader.Resonite.UI;
-using MonkeyLoader.Resonite;
+using MonkeyLoader.Resonite.UI.Inspectors;
+using MonkeyLoader.Resonite.Configuration;
+using MonkeyLoader.Components;
+using MonkeyLoader.Configuration;
 
 namespace BoundedUIX
 {
-    [HarmonyPatch(typeof(RectTransform))]
-    [HarmonyPatchCategory(nameof(RectTransformDiagnosis))]
-    internal sealed class RectTransformDiagnosis : ResoniteMonkey<RectTransformDiagnosis>
+    internal sealed class RectTransformDiagnosis : ResoniteInspectorMonkey<RectTransformDiagnosis, BuildInspectorBodyEvent, RectTransform>
     {
-        [HarmonyPostfix]
-        [HarmonyPatch(nameof(RectTransform.BuildInspectorUI))]
-        private static void BuildInspectorUIPostfix(RectTransform __instance, UIBuilder ui)
+        private readonly ConfigKeySessionShare<bool> _enabledShare = new(true);
+
+        public override bool CanBeDisabled => true;
+
+        public override int Priority => HarmonyLib.Priority.Low;
+
+        protected override bool AppliesTo(BuildInspectorBodyEvent eventData)
+            => eventData.Worker is RectTransform; // Exclude Enabled check to always generate, but use session share for visibility
+
+        protected override void Handle(BuildInspectorBodyEvent eventData)
         {
-            ui.LocalActionButton("Visualize Preferred Area", button =>
+            var rectTransform = (RectTransform)eventData.Worker;
+
+            var button = eventData.UI.LocalActionButton("Visualize Preferred Area", button =>
             {
                 button.Enabled = false;
 
-                __instance.StartTask(async () =>
+                rectTransform.StartTask(async () =>
                 {
-                    while (!button.IsRemoved && !__instance.IsRemoved && (!__instance?.Canvas.IsRemoved ?? false))
+                    while (!button.IsRemoved && !rectTransform.IsRemoved && (!rectTransform?.Canvas.IsRemoved ?? false))
                     {
-                        var horizontal = __instance!.GetHorizontalMetrics().preferred;
-                        var vertical = __instance.GetVerticalMetrics().preferred;
-                        var area = __instance.ComputeGlobalComputeRect();
+                        var horizontal = rectTransform!.GetHorizontalMetrics().preferred;
+                        var vertical = rectTransform.GetVerticalMetrics().preferred;
+                        var area = rectTransform.ComputeGlobalComputeRect();
                         var color = colorX.Blue;
 
                         if (horizontal <= 0 && vertical <= 0)
@@ -42,26 +47,35 @@ namespace BoundedUIX
                         }
                         else if (horizontal <= 0)
                         {
-                            horizontal = __instance.Canvas.UnitScale;
+                            horizontal = rectTransform.Canvas.UnitScale;
                             color = colorX.Purple;
                         }
                         else if (vertical <= 0)
                         {
-                            vertical = __instance.Canvas.UnitScale;
+                            vertical = rectTransform.Canvas.UnitScale;
                             color = colorX.Purple;
                         }
 
-                        var pos = __instance.Canvas.Slot.LocalPointToGlobal(new float3(area.Center / __instance.Canvas.UnitScale));
-                        pos -= 0.5f * UIXGizmoConfig.Offset * __instance.Canvas.Slot.Forward;
+                        var pos = rectTransform.Canvas.Slot.LocalPointToGlobal(new float3(area.Center / rectTransform.Canvas.UnitScale));
+                        pos -= 0.5f * UIXGizmoConfig.Offset * rectTransform.Canvas.Slot.Forward;
 
-                        var size = __instance.Canvas.Slot.LocalScaleToGlobal(new float3(horizontal, vertical) / __instance.Canvas.UnitScale);
+                        var size = rectTransform.Canvas.Slot.LocalScaleToGlobal(new float3(horizontal, vertical) / rectTransform.Canvas.UnitScale);
 
-                        __instance.World.Debug.Box(pos, size, color.SetA(0.5f), __instance.Canvas.Slot.GlobalRotation);
+                        rectTransform.World.Debug.Box(pos, size, color.SetA(0.5f), rectTransform.Canvas.Slot.GlobalRotation);
 
                         await default(NextUpdate);
                     }
                 });
             });
+
+            _enabledShare.DriveFromVariable(button.Slot.ActiveSelf_Field);
+        }
+
+        protected override bool OnEngineReady()
+        {
+            ((IEntity<IDefiningConfigKey<bool>>)EnabledToggle!).Components.Add(_enabledShare);
+
+            return base.OnEngineReady();
         }
     }
 }

@@ -1,0 +1,44 @@
+﻿{
+  "localeCode": "de",
+  "authors": [ "Banane9" ],
+  "messages": {
+    "BoundedUIX.Name": "Bounded UIX",
+    "BoundedUIX.Description": "Diese Mod macht UIX-Elemente mit dem DevTool selektierbar und mit den üblichen Gizmos für Slots editierbar. Außerdem verhindert sie, dass UIX-Elemente kaputt gehen, wenn ein Parent eingefügt wird, und erlaubt es, ihren präferierten Bereich zu debuggen.",
+
+    "BoundedUIX.DevToolSelectableUIX.Name": "DevTool-selektierbares UIX",
+    "BoundedUIX.DevToolSelectableUIX.Description": "Erlaubt es, UIX-RectTransform-Elemente direkt mit dem DevTool zu selektieren. Nutzt die <i>Selektierbares UIX</i> Einstellungen.",
+
+    "BoundedUIX.UIXGizmos.Name": "UIX Gizmos",
+    "BoundedUIX.UIXGizmos.Description": "Modifiziert die verschiedenen Gizmos des DevTools, um mit UIX-RectTransform-Elementen zu funktionieren.",
+
+    "BoundedUIX.SlotAddingPatches.Name": "Slot-Hinzufügen-Anpassungen",
+    "BoundedUIX.SlotAddingPatches.Description": "Sorgt dafür, dass die UIX-RectTransform-Hierarchie nicht kaputt gemacht wird, wenn Slots im Inspektor eingefügt werden. Nutzt die <i>Inspektor</i> Einstellungen.",
+
+    "BoundedUIX.RectTransformDiagnosis.Name": "RectTransform Diagnose",
+    "BoundedUIX.RectTransformDiagnosis.Description": "Fügt einen Knopf zu RectTransform-Komponent im Inspektor, der deren präferierten Bereich in der Welt hervorhebt.",
+
+    "BoundedUIX.Config.Gizmos.Name": "Gizmos",
+    "BoundedUIX.Config.Gizmos.Offset.Name": "Abstand",
+    "BoundedUIX.Config.Gizmos.Offset.Description": "Distanz, um welche die Verschiebungsgizmos von der Oberfläche des Canvas hervorgehoben werden. In Welt-Einheiten.",
+
+    "BoundedUIX.Config.Inspector.Name": "Inspektor",
+    "BoundedUIX.Config.Inspector.MoveTransformToParent.Name": "Transformation auf Parent übertragen",
+    "BoundedUIX.Config.Inspector.MoveTransformToParent.Description": "Verschiebt die RectTransform-Werte nach oben, wenn ein Parent erstellt wird (analog zu Slottransforms).",
+    "BoundedUIX.Config.Inspector.ParentSlotName.Name": "Name von Parentslots",
+    "BoundedUIX.Config.Inspector.ParentSlotName.Description": "Standardname für Parentslots in UIX-Hierarchien. Mit <i>{TargetName}</i> kann der Name des zukünftigen Childs genutzt werden.",
+    "BoundedUIX.Config.Inspector.ChildSlotName.Name": "Name von Childslots",
+    "BoundedUIX.Config.Inspector.ChildSlotName.Description": "Standardname für Childslots in UIX-Hierarchien. Mit <i>{TargetName}</i> kann der name des Parents genutzt werden.",
+    "BoundedUIX.Config.Inspector.PivotSlotName.Name": "Name von Pivotslots",
+    "BoundedUIX.Config.Inspector.PivotSlotName.Description": "Standardname für Pivotslots in UIX-Hierarchien. Mit <i>{TargetName}</i> kann der Name des zukünftigen Childs genutzt werden.",
+
+    "BoundedUIX.Config.SelectableUIX.Name": "Selektierbares UIX",
+    "BoundedUIX.Config.SelectableUIX.AllowLayoutSelection.Name": "Erlaube Layout-Selektierung",
+    "BoundedUIX.Config.SelectableUIX.AllowLayoutSelection.Description": "Erlaubt das Selektieren von UIX-RectTransform-Elementen, die nichts sichtbares haben. Hilft, wenn man Layout-Parents durch mehrfaches Auswählen selektieren will.",
+    "BoundedUIX.Config.SelectableUIX.PrioritizeHierarchyDepth.Name": "Priorisiere Tiefe in der Hierarchie",
+    "BoundedUIX.Config.SelectableUIX.PrioritizeHierarchyDepth.Description": "Priorisiert die Tiefe in der Hierarchie eines potenziell getroffenen RectTransforms über der Layoutanordnung. Kann statt oder zusätzlich zum Ignorieren von bereits selektierten Elementen helfen.",
+    "BoundedUIX.Config.SelectableUIX.IgnoreAlreadySelected.Name": "Ignoriere bereits Selektierte",
+    "BoundedUIX.Config.SelectableUIX.IgnoreAlreadySelected.Description": "Überspringt bereits selektierte Elemente beim Auswahlprozess. Hilft bei überlagerten Elementen.",
+    "BoundedUIX.Config.SelectableUIX.RepeatSelectionThreshold.Name": "Grenze für mehrfaches Auswählen",
+    "BoundedUIX.Config.SelectableUIX.RepeatSelectionThreshold.Description": "Die minimale lokale Distanz zwischen Selektionstreffern, um es als 'neuen' Selektionsversuch zu werten. Arbeitet zusammen mit <i>Ignoriere bereits Selektierte</i>.<size=50%><br/><br/></size>Erhöhen für mehr Toleranz. Muss eventuell je nach Item angepasst werden."
+  }
+}

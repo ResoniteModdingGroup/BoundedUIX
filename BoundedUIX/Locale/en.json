@@ -1,0 +1,44 @@
+﻿{
+  "localeCode": "en",
+  "authors": [ "Banane9" ],
+  "messages": {
+    "BoundedUIX.Name": "Bounded UIX",
+    "BoundedUIX.Description": "This mod makes UIX elements selectable and editable with the usual Slot gizmos. Additionally, it fixes UIX elements breaking when a parent is inserted and allows debugging their preferred area.",
+
+    "BoundedUIX.DevToolSelectableUIX.Name": "DevTool-Selectable UIX",
+    "BoundedUIX.DevToolSelectableUIX.Description": "Allows selecting UIX RectTransform elements directly with a DevTool. Uses the <i>Selectable UIX</i> settings.",
+
+    "BoundedUIX.UIXGizmos.Name": "UIX Gizmos",
+    "BoundedUIX.UIXGizmos.Description": "Modifies the various DevTool gizmos to work with UIX RectTransform elements.",
+
+    "BoundedUIX.SlotAddingPatches.Name": "Slot Adding Tweaks",
+    "BoundedUIX.SlotAddingPatches.Description": "Ensures that the UIX RectTransform hierarchy isn't broken when inserting slots using the inspector. Uses the <i>Inspector</i> settings.",
+
+    "BoundedUIX.RectTransformDiagnosis.Name": "RectTransform Diagnosis",
+    "BoundedUIX.RectTransformDiagnosis.Description": "Adds a button to RectTransform components in the inspector that highlights their preferred area in the world.",
+
+    "BoundedUIX.Config.Gizmos.Name": "Gizmos",
+    "BoundedUIX.Config.Gizmos.Offset.Name": "Offset",
+    "BoundedUIX.Config.Gizmos.Offset.Description": "Distance to raise the movement gizmos from the surface of the canvas. In world units.",
+
+    "BoundedUIX.Config.Inspector.Name": "Inspector",
+    "BoundedUIX.Config.Inspector.MoveTransformToParent.Name": "Move Transform to Parent",
+    "BoundedUIX.Config.Inspector.MoveTransformToParent.Description": "Move RectTransform values up when creating a parent (analog to slot transforms).",
+    "BoundedUIX.Config.Inspector.ParentSlotName.Name": "Name of Parent Slot",
+    "BoundedUIX.Config.Inspector.ParentSlotName.Description": "Default name for parent slots in UIX hierarchies. Use <i>{TargetName}</i> to get the child-to-be's name.",
+    "BoundedUIX.Config.Inspector.ChildSlotName.Name": "Name of Child Slot",
+    "BoundedUIX.Config.Inspector.ChildSlotName.Description": "Default name for child slots in UIX hierarchies. Use <i>{TargetName}</i> to get the parent's name.",
+    "BoundedUIX.Config.Inspector.PivotSlotName.Name": "Name of Pivot Slot",
+    "BoundedUIX.Config.Inspector.PivotSlotName.Description": "Default name for pivot slots in UIX hierarchies. Use <i>{TargetName}</i> to get the child-to-be's name.",
+
+    "BoundedUIX.Config.SelectableUIX.Name": "Selectable UIX",
+    "BoundedUIX.Config.SelectableUIX.AllowLayoutSelection.Name": "Allow Layout Selection",
+    "BoundedUIX.Config.SelectableUIX.AllowLayoutSelection.Description": "Allow selecting UIX RectTransform elements that don't have anything visual on them. Helps when wanting to select layout parents using repeated selection.",
+    "BoundedUIX.Config.SelectableUIX.PrioritizeHierarchyDepth.Name": "Prioritize Hierarchy Depth",
+    "BoundedUIX.Config.SelectableUIX.PrioritizeHierarchyDepth.Description": "Prioritize the hierarchy depth of a potentially hit RectTransform over the layout order. Can help instead of or in addition to ignoring already selected elements.",
+    "BoundedUIX.Config.SelectableUIX.IgnoreAlreadySelected.Name": "Ignore Already Selected",
+    "BoundedUIX.Config.SelectableUIX.IgnoreAlreadySelected.Description": "Skip already selected elements in the targeting process. Helps with layered elements.",
+    "BoundedUIX.Config.SelectableUIX.RepeatSelectionThreshold.Name": "Repeat Selection Threshold",
+    "BoundedUIX.Config.SelectableUIX.RepeatSelectionThreshold.Description": "The minimum local distance between targeting hits to consider it a 'new' selection attempt. Works in tandem with <i>Ignore Already Selected</i>.<size=50%><br/><br/></size>Increase for more leniency. May need to be adjusted depending on the item."
+  }
+}

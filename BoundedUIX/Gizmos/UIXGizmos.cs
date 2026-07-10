@@ -1,13 +1,7 @@
 ﻿using FrooxEngine;
 using HarmonyLib;
-using MonkeyLoader.Patching;
 using MonkeyLoader.Resonite;
 using MonkeyLoader.Resonite.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoundedUIX.Gizmos
 {
@@ -16,6 +10,7 @@ namespace BoundedUIX.Gizmos
     internal sealed class UIXGizmos : ConfiguredResoniteMonkey<UIXGizmos, UIXGizmoConfig>
     {
         public override bool CanBeDisabled => true;
+
         public override string Name => "UIX Gizmos";
 
         [HarmonyPrefix]

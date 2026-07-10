@@ -1,9 +1,4 @@
 ﻿using MonkeyLoader.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoundedUIX.Gizmos
 {
@@ -14,7 +9,7 @@ namespace BoundedUIX.Gizmos
             new ConfigKeyRange<float>(0, .2f)
         };
 
-        public static float Offset => _offsetKey.GetValue();
+        public static float Offset => _offsetKey;
 
         public override string Description => "Options for the modified UIX RectTransform Gizmos.";
 

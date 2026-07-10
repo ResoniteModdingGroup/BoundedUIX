@@ -1,12 +1,17 @@
 <Project>
-    <PropertyGroup>
-      <PackageReadmeFile>README.md</PackageReadmeFile>
-      <ResoniteInstallOnBuild Condition="'$(ResoniteInstallOnBuild)'==''">true</ResoniteInstallOnBuild>
-    </PropertyGroup>
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <ResoniteInstallOnBuild Condition="'$(ResoniteInstallOnBuild)'==''">true</ResoniteInstallOnBuild>
+  </PropertyGroup>
 
-    <PropertyGroup Condition="'$(ResonitePath)'==''">
-      <ResonitePath Condition="Exists('$(MSBuildThisFileDirectory)Resonite')">$(MSBuildThisFileDirectory)Resonite</ResonitePath>
-      <ResonitePath Condition="Exists('D:/Files/Games/Resonite/app/')">D:/Files/Games/Resonite/app</ResonitePath>
-      <ResonitePath Condition="Exists('G:\SteamLibrary\steamapps\common\Resonite')">G:\SteamLibrary\steamapps\common\Resonite</ResonitePath>
-    </PropertyGroup>
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    <ResoniteInstallOnBuild>false</ResoniteInstallOnBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(ResonitePath)'==''">
+    <ResonitePath Condition="Exists('$(MSBuildThisFileDirectory)Resonite')">$(MSBuildThisFileDirectory)Resonite</ResonitePath>
+    <ResonitePath Condition="Exists('D:/Files/Games/Resonite/app/')">D:/Files/Games/Resonite/app</ResonitePath>
+    <ResonitePath Condition="Exists('G:\SteamLibrary\steamapps\common\Resonite')">G:\SteamLibrary\steamapps\common\Resonite</ResonitePath>
+  </PropertyGroup>
 </Project>

@@ -19,8 +19,9 @@ namespace BoundedUIX
 
         public override int Priority => HarmonyLib.Priority.Low;
 
+        // Exclude Enabled check to always generate, but use session share for visibility
         protected override bool AppliesTo(BuildInspectorBodyEvent eventData)
-            => eventData.Worker is RectTransform; // Exclude Enabled check to always generate, but use session share for visibility
+            => eventData.Worker is RectTransform;
 
         protected override void Handle(BuildInspectorBodyEvent eventData)
         {

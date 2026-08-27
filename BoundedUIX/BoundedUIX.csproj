@@ -1,9 +1,9 @@
-﻿<Project Sdk="Remora.Resonite.Sdk/2.3.1">
+﻿<Project Sdk="Remora.Resonite.Sdk/2.3.4">
   <PropertyGroup>
     <PackageId>BoundedUIX</PackageId>
     <Title>Bounded UIX</Title>
     <Authors>Banane9</Authors>
-    <Version>2.1.1-beta</Version>
+    <Version>2.1.2-beta</Version>
     <Description>This MonkeyLoader mod for Resonite makes UIX elements selectable and editable with the usual Slot gizmos,
 as well as fixing UIX elements breaking when a parent is inserted.</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
